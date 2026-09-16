@@ -47,13 +47,50 @@
 .save-indicator{font-size:11px;color:#b2d3c9;white-space:nowrap;align-self:center}
 @media(max-width:800px){.modules-grid{grid-template-columns:1fr}.manager-head{padding:26px 22px}.manager-topline{align-items:stretch}.create-form{max-width:none}}
 @media(max-width:480px){.create-form{flex-wrap:wrap}.create-form input{flex-basis:100%}.module-card{padding:17px}.manager{padding:16px}.module-buttons .btn{flex:1}}
+
+/* État du projet : rubriques contractuelles du modèle à 18 sections */
+.etat-floating{position:fixed;right:23px;bottom:22px;z-index:30;box-shadow:0 12px 30px rgba(10,55,47,.27);font-size:13px;min-height:46px;padding:11px 17px}
+.etat-box{border:1px solid #bdddd2;background:#f3faf6;border-radius:12px;margin-top:18px;padding:17px;display:grid;gap:12px}
+.etat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.etat-head h4{margin:0;font-size:14px;letter-spacing:-.01em;color:#14594e}
+.etat-head p{margin:5px 0 0;font-size:11px;color:#536d66;line-height:1.6}
+.etat-target{font-size:10px;font-weight:750;background:#e1f2e9;border:1px solid #b9dccc;border-radius:7px;padding:6px 8px;color:#21665b}
+.etat-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.etat-field{display:grid;gap:5px;min-width:0}
+.etat-field.wide{grid-column:1/-1}
+.etat-field label{font-size:11px;font-weight:750;color:#285a50}
+.etat-field .etat-help{font-size:10px;color:#58736a;line-height:1.5}
+.etat-field textarea,.etat-field input{width:100%;border:1px solid #c8dfd5;background:white;border-radius:8px;font-size:12px;color:var(--ink);padding:10px 11px;line-height:1.55}
+.etat-field textarea{resize:vertical;min-height:76px}
+.etat-field textarea:focus,.etat-field input:focus{border-color:#48a996;outline:2px solid #b5e6d7}
+.etat-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#536d66;font-size:11px}
+.etat-banner{background:#ebf7f0;border:1px solid #b7dace;color:#235d4e;font-size:12px;line-height:1.6;border-radius:10px;padding:12px 15px;margin:15px 0 0}
+.etat-note{font-size:10px;line-height:1.55;color:#516d63}
+@media(max-width:720px){.etat-fields{grid-template-columns:1fr}.etat-floating{left:14px;right:14px;bottom:12px}.main{padding-bottom:95px}}
+/* Fiche permanente et champs de référence structurés */
+.etat-global{margin-top:19px;background:#fff;border:1px solid #b9d7cc;border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.etat-global summary{cursor:pointer;list-style:none;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.etat-global summary::-webkit-details-marker{display:none}
+.etat-global summary .global-title{font-size:15px;font-weight:780;color:#194f43}
+.etat-global summary .global-desc{display:block;margin-top:5px;font-size:11px;color:var(--muted);font-weight:450;line-height:1.5}
+.etat-global[open] summary{border-bottom:1px solid var(--line)}
+.etat-global-inner{padding:18px 20px 23px;display:grid;gap:19px}
+.etat-global-group h3{font-size:12px;margin:0 0 11px;color:#245c51}
+.etat-global-help{font-size:11px;color:#56746b;margin:0 0 12px;line-height:1.6}
+.etat-path{display:block;margin-top:4px;margin-bottom:6px;font-size:10px;line-height:1.45;color:#5e746d;font-weight:450}
+.etat-old{margin-top:5px;background:#fffaf0;border:1px solid #efdbbb;border-radius:9px;padding:10px 12px;color:#604b2a}
+.etat-old summary{font-size:11px;font-weight:700;cursor:pointer}
+.etat-old pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:11px;line-height:1.6;margin:9px 0 0}
+.etat-preview-note{font-size:11px;color:#476d62;line-height:1.6}
+.etat-marker{display:inline-flex;gap:5px;align-items:center;color:#3e695d;font-size:10px;font-weight:700}
+@media(max-width:720px){.etat-global summary,.etat-global-inner{padding:15px}}
 </style>
 </head>
 <body>
 <section class="manager" id="moduleManager" aria-label="Gestion des modules">
  <div class="manager-inner">
   <header class="manager-head">
-   <div><div class="eyebrow">Parcours de conception</div><h1>Gestion des modules</h1><p>Retrouvez vos modules, leurs étapes et les décisions enregistrées. Chaque module conserve son suivi séparément.</p></div>
+   <div><div class="eyebrow">Parcours de conception</div><h1>Gestion des modules</h1><p>Retrouvez vos modules, leurs étapes et les décisions enregistrées. Chaque module conserve son suivi et son état de projet séparément.</p></div>
    <div class="manager-actions"><button class="btn text" type="button" id="exportAllBtn">Exporter tous les modules</button><button class="btn text" type="button" id="managerImportBtn">Importer une sauvegarde</button></div>
   </header>
   <div class="manager-main">
@@ -61,7 +98,7 @@
     <form class="create-form" id="createModuleForm"><label class="sr-only" for="newModuleName">Nom du nouveau module</label><input id="newModuleName" type="text" maxlength="120" required autocomplete="off" placeholder="Nom du nouveau module"><button class="btn primary" type="submit">+ Créer un module</button></form>
    </div>
    <div id="moduleCards" class="modules-grid" aria-live="polite"></div>
-   <p class="manager-info">Enregistrement automatique dans ce navigateur. Pour conserver une copie ou transférer vos modules vers un autre appareil, utilisez « Exporter tous les modules ». La suppression d'un module est définitive si vous n'avez pas de sauvegarde.</p>
+   <p class="manager-info">Enregistrement automatique dans ce navigateur. Pour conserver une copie ou transférer vos modules vers un autre appareil, utilisez « Exporter tous les modules ». Le fichier ETAT_PROJET (.md) reprend les 18 sections du modèle, avec les éléments non validés et anciens séparés ; l'export JSON conserve tous les champs, statuts, notes et brouillons. La suppression d'un module est définitive si vous n'avez pas de sauvegarde.</p>
   </div>
  </div>
 </section>
@@ -72,7 +109,7 @@
   <div><div class="side-overline">Parcours de production</div><p class="side-title">Du syllabus au module finalisé</p><p class="side-desc">Les phases, les étapes et les décisions, dans l'ordre de conception.</p></div>
   <div class="side-progress"><strong id="sidePercent">0 %</strong><small id="sideStats">0 étape validée</small><div class="track dark"><span id="sideBar" style="width:0%"></span></div></div>
   <nav class="side-nav" id="sideNav"></nav>
-  <div class="side-bottom">Avancement conservé sur cet appareil. Exportez le suivi pour le transférer ou l'archiver.</div>
+  <div class="side-bottom">Avancement et état du projet enregistrés sur cet appareil. Téléchargez régulièrement une copie Markdown pour votre Project ChatGPT.</div>
 </aside>
 <main class="main">
   <header class="hero">
@@ -81,7 +118,7 @@
     <p>Suivez les validations, retrouvez les consignes et copiez les prompts au moment voulu. Les missions, les boucles et les documents peuvent être ajoutés au fil de la conception.</p>
     <div class="hero-bottom">
       <div class="project-edit"><label for="projectName">Nom du module</label><input id="projectName" placeholder="Ex. Introduction à la gestion de projet" autocomplete="off"></div>
-      <div class="hero-buttons"><span class="save-indicator" id="saveIndicator" role="status">Enregistrement automatique</span><button class="btn text" id="exportBtn" type="button">↓ Exporter le suivi</button><button class="btn text" id="importBtn" type="button">↑ Importer</button></div>
+      <div class="hero-buttons"><button class="btn primary" id="downloadEtatTop" type="button">Télécharger l’état projet (.md)</button><span class="save-indicator" id="saveIndicator" role="status">Enregistrement automatique</span><button class="btn text" id="exportBtn" type="button">↓ Exporter le suivi</button><button class="btn text" id="importBtn" type="button">↑ Importer</button></div>
     </div>
   </header>
   <nav class="overview" id="overview" aria-label="Vue d'ensemble du parcours"></nav>
@@ -91,9 +128,12 @@
     <button class="btn small" id="expandAll" type="button">Tout déplier</button><button class="btn small" id="collapseAll" type="button">Tout replier</button><span class="quick-count" id="visibleCount"></span>
   </div>
   <div class="note-banner">Les étapes de vidéo, boîte à outils, révision, évaluation finale et assemblage sont repérées <strong>À cadrer</strong>. Leurs intitulés et propositions de prompts servent au suivi, en attendant la validation du workflow transversal. Chaque module est sauvegardé automatiquement dans ce navigateur.</div>
+  <div class="etat-banner">Le fichier exporté reprend les <strong>18 sections du modèle ETAT_PROJET</strong>. Renseignez la fiche permanente puis les champs associés à chaque étape. Les propositions restent séparées des éléments marqués « Validé ». Les notes de l’ancienne version sont conservées dans une annexe à classer. Le téléchargement est manuel, puis le fichier est ajouté dans votre Project ChatGPT.</div>
+  <details class="etat-global" id="etatGlobalPanel"><summary><span><span class="global-title">Fiche permanente du module</span><span class="global-desc">Renseigner les données communes, le contexte et les exceptions. Chaque étape complète ensuite les rubriques correspondantes.</span></span><span class="btn small">Ouvrir / fermer</span></summary><div class="etat-global-inner" id="etatGlobalFields"></div></details>
   <div id="phases"></div>
   <footer class="footer">Cadres de référence : 01_CADRE_PERMANENT · 02_MODELE_PEDAGOGIQUE · 03_WORKFLOW_PREPARATION · 04_WORKFLOW_MISSION · 05_WORKFLOW_PROBLEME_COMPLEXE · 06_FORMATS_ET_CONTRATS · 07_CONTROLES_QUALITE. Le workflow 08 reste à définir.</footer>
 </main>
+ <button class="btn primary etat-floating" type="button" id="downloadEtatFixed">Télécharger l’état projet</button>
 </div>
 <input id="importFile" type="file" accept=".json,application/json" hidden>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -183,16 +223,37 @@ const phaseMeta=[
 ];
 const LEGACY_KEY='suivi-pedagogique-v1';
 const DB_KEY='suivi-pedagogique-modules-v2';
-const defaults=()=>({version:1,name:'',missionCount:1,loops:{dec:1,mis1:1},docs:{pc1:1},rem:{},steps:{},notes:{}});
+const defaults=()=>({version:1,name:'',missionCount:1,loops:{dec:1,mis1:1},docs:{pc1:1},rem:{},steps:{},notes:{},etat:{},etatChamps:{},etatGlobal:{},etatDates:{}});
 const blankDB=()=>({version:2,modules:{},order:[],activeId:null});
 const own=(obj,key)=>Object.prototype.hasOwnProperty.call(obj,key);
+const ETAT_FIELDS=['content','context','decisions','reference','pending']; // Champs conservés de l’ancienne version : archive sans conversion implicite.
+function normalizeEtat(raw){
+ const out={};if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
+ for(const [id,value] of Object.entries(raw)){
+  if(id.length>130||!value||typeof value!=='object'||Array.isArray(value))continue;
+  const record={};for(const field of ETAT_FIELDS){if(typeof value[field]==='string')record[field]=value[field].slice(0,120000)}
+  if(Object.values(record).some(v=>v.trim()))out[id]=record;
+ }
+ return out;
+}
+function normalizeTextMap(raw,maxKey=160,maxValue=120000){
+ const out={};if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
+ for(const [key,value] of Object.entries(raw)){if(key.length<=maxKey&&typeof value==='string')out[key]=value.slice(0,maxValue)}return out;
+}
+function normalizeStepFields(raw){
+ const out={};if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
+ for(const [id,record] of Object.entries(raw)){if(id.length>130||!record||typeof record!=='object'||Array.isArray(record))continue;
+  const fields=normalizeTextMap(record);if(Object.values(fields).some(x=>x.trim()))out[id]=fields;
+ }return out;
+}
+function normalizeDates(raw){const dates=normalizeTextMap(raw,130,48);return Object.fromEntries(Object.entries(dates).filter(([,d])=>!Number.isNaN(Date.parse(d))))}
 function normalizeModule(v){
  if(!v||typeof v!=='object'||v.version!==1||!Number.isInteger(v.missionCount)||v.missionCount<1||v.missionCount>100)throw Error('Format de module non reconnu');
  const numberMap=(raw)=>Object.fromEntries(Object.entries(raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{}).filter(([k,n])=>k.length<100&&Number.isInteger(n)&&n>=1&&n<=150));
  const stringMap=(raw)=>Object.fromEntries(Object.entries(raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{}).filter(([k,v])=>k.length<130&&typeof v==='string').map(([k,v])=>[k,v.slice(0,250000)]));
  const steps=Object.fromEntries(Object.entries(v.steps&&typeof v.steps==='object'&&!Array.isArray(v.steps)?v.steps:{}).filter(([k,x])=>k.length<130&&['à-faire','en-cours','proposé','validé'].includes(x)));
  const rem=Object.fromEntries(Object.entries(v.rem&&typeof v.rem==='object'&&!Array.isArray(v.rem)?v.rem:{}).filter(([k,x])=>k.length<130&&x===true));
- return {...defaults(),name:String(v.name||'').slice(0,120),missionCount:v.missionCount,loops:{...defaults().loops,...numberMap(v.loops)},docs:{...defaults().docs,...numberMap(v.docs)},steps,notes:stringMap(v.notes),rem};
+ return {...defaults(),name:String(v.name||'').slice(0,120),missionCount:v.missionCount,loops:{...defaults().loops,...numberMap(v.loops)},docs:{...defaults().docs,...numberMap(v.docs)},steps,notes:stringMap(v.notes),rem,etat:normalizeEtat(v.etat),etatChamps:normalizeStepFields(v.etatChamps),etatGlobal:normalizeTextMap(v.etatGlobal),etatDates:normalizeDates(v.etatDates)};
 }
 function uid(){return 'mod-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,11)}
 let storageOK=true;
@@ -233,26 +294,286 @@ function progress(items){const all=items.flatMap(leaves),valid=all.filter(s=>(st
 function matches(s){if(filter!=='all'&&(state.steps[s.id]||'à-faire')!==filter)return false;if(!query)return true;const hay=[s.id,s.title,s.desc,s.how,...s.refs,s.tip].join(' ').toLocaleLowerCase('fr');return hay.includes(query)}
 function filtered(item){if(item.type!=='group')return matches(item)?item:null;const children=item.children.map(filtered).filter(Boolean);if(children.length)return {...item,children};if(query && [item.title,item.id,item.desc].join(' ').toLocaleLowerCase('fr').includes(query))return item;return null}
 function statusClass(v){return v==='validé'?'validé':v==='en-cours'?'en-cours':v==='proposé'?'proposé':'à-faire'}
+// Modèle ETAT_PROJET : 18 sections et les mêmes rubriques que le document de référence.
+// Les chemins de champs restent stables dans la sauvegarde JSON et les exports Markdown.
+const SCHEMA=[
+ {title:'Identification',groups:[['',[
+ ['identification.nom','Nom du module'],['identification.formation','Formation'],['identification.version','Version de l’état'],['identification.date','Date de dernière mise à jour']]]]},
+ {title:'Phase actuelle',groups:[['',[
+ ['phase.phase','Phase'],['phase.etape','Étape actuelle'],['phase.statut','Statut de l’étape'],['phase.derniere','Dernière étape validée'],['phase.prochaine','Prochaine étape autorisée']]]]},
+ {title:'Données d’entrée',groups:[
+ ['Informations SOURCE',[['donnees.source.donnee','Donnée'],['donnees.source.valeur','Valeur'],['donnees.source.source','Source']]],
+ ['Informations DÉDUITES validées',[['donnees.deduit.donnee','Donnée'],['donnees.deduit.valeur','Valeur'],['donnees.deduit.justification','Justification']]],
+ ['Informations À_DÉFINIR',[['donnees.a_definir.donnee','Donnée'],['donnees.a_definir.effet','Effet potentiel sur la conception'],['donnees.a_definir.statut','Statut de décision']]]]},
+ {title:'Contraintes du module',groups:[['',[
+ ['contraintes.public','Public cible'],['contraintes.niveau','Niveau'],['contraintes.prerequis','Prérequis'],['contraintes.duree','Durée cible'],['contraintes.modalites','Modalités imposées'],['contraintes.evaluation','Modalités d’évaluation imposées'],['contraintes.institution','Contraintes institutionnelles'],['contraintes.references','Références obligatoires'],['contraintes.autres','Autres contraintes']]]]},
+ {title:'Architecture pédagogique',groups:[
+ ['Compétences visées',[['architecture.competences','Compétence']]],
+ ['Niveaux socles validés',[['architecture.socle.competence','Compétence'],['architecture.socle.niveau','Niveau socle'],['architecture.socle.limites','Limites']]],
+ ['Objectifs d’apprentissage',[['architecture.objectifs.id','Identifiant'],['architecture.objectifs.objectif','Objectif'],['architecture.objectifs.competence','Compétence associée'],['architecture.objectifs.statut','Statut']]],
+ ['Répartition dans le parcours',[['architecture.repartition.decouverte','Découverte'],['architecture.repartition.mission1','Mission 1'],['architecture.repartition.pc1','Problème complexe 1'],['architecture.repartition.mission2','Mission 2'],['architecture.repartition.pc2','Problème complexe 2'],['architecture.repartition.supplementaires','Étapes supplémentaires']]]]},
+ {title:'Mission actuellement travaillée',groups:[['',[
+ ['mission.numero','Numéro ou identifiant'],['mission.objectif','Objectif d’apprentissage'],['mission.sousobjectifs','Sous-objectifs'],['mission.boucle','Boucle courante'],['mission.sousobjectif','Sous-objectif courant'],['mission.statut','Statut']]]]},
+ {title:'Acquis de l’apprenant',groups:[
+ ['Acquis supposés avant le module',[['acquis.avant.notions','Notions'],['acquis.avant.methodes','Méthodes'],['acquis.avant.vocabulaire','Vocabulaire']]],
+ ['Acquis introduits dans le module',[['acquis.introduits.notions','Notions'],['acquis.introduits.methodes','Méthodes'],['acquis.introduits.outils','Outils'],['acquis.introduits.vocabulaire','Vocabulaire'],['acquis.introduits.situations','Situations déjà rencontrées']]],
+ ['Acquis disponibles à l’étape actuelle',[['acquis.disponibles.notions','Notions'],['acquis.disponibles.methodes','Méthodes'],['acquis.disponibles.outils','Outils'],['acquis.disponibles.autonomie','Niveau d’autonomie']]]]},
+ {title:'Lore',groups:[
+ ['Organisation',[['lore.organisation.nom','Nom'],['lore.organisation.secteur','Secteur'],['lore.organisation.activite','Activité'],['lore.organisation.contexte','Contexte général']]],
+ ['Rôle de l’apprenant',[['lore.apprenant.fonction','Fonction'],['lore.apprenant.position','Position'],['lore.apprenant.experience','Niveau d’expérience'],['lore.apprenant.responsabilites','Responsabilités']]],
+ ['Personnages',[['lore.personnages.nom','Nom'],['lore.personnages.fonction','Fonction'],['lore.personnages.relation','Relation avec l’apprenant'],['lore.personnages.caracteristiques','Caractéristiques utiles'],['lore.personnages.etablis','Éléments établis']]],
+ ['Lieux',[['lore.lieux.lieu','Lieu'],['lore.lieux.fonction','Fonction'],['lore.lieux.etablis','Éléments établis']]],
+ ['Objets et ressources',[['lore.objets.element','Élément'],['lore.objets.fonction','Fonction'],['lore.objets.apparition','Première apparition']]],
+ ['Événements établis',[['lore.evenements.evenement','Événement'],['lore.evenements.etape','Étape'],['lore.evenements.consequences','Conséquences']]],
+ ['Temporalité',[['lore.temps.depart','Point de départ'],['lore.temps.evenements','Événements successifs'],['lore.temps.actuelle','Situation actuelle']]]]},
+ {title:'Décisions validées',groups:[
+ ['Décisions pédagogiques',[['decisions.pedagogiques.decision','Décision'],['decisions.pedagogiques.justification','Justification'],['decisions.pedagogiques.etape','Étape concernée']]],
+ ['Décisions narratives',[['decisions.narratives.decision','Décision'],['decisions.narratives.consequence','Conséquence'],['decisions.narratives.etape','Étape concernée']]],
+ ['Décisions éditoriales',[['decisions.editoriales.decision','Décision'],['decisions.editoriales.application','Application']]]]},
+ {title:'Exceptions aux cadres',groups:[['',[
+ ['exceptions.exception','Exception'],['exceptions.regle','Règle normalement applicable'],['exceptions.modification','Modification décidée'],['exceptions.perimetre','Périmètre'],['exceptions.duree','Durée de validité'],['exceptions.justification','Justification']]]]},
+ {title:'Ressources produites',groups:[
+ ['H5P',[['ressources.h5p.mission','Mission'],['ressources.h5p.boucle','Boucle'],['ressources.h5p.nombre','Nombre'],['ressources.h5p.statut','Statut']]],
+ ['GIFT',[['ressources.gift.mission','Mission'],['ressources.gift.boucle','Boucle'],['ressources.gift.nombre','Nombre'],['ressources.gift.statut','Statut']]],
+ ['Glossaires',[['ressources.glossaires.mission','Mission'],['ressources.glossaires.boucle','Boucle'],['ressources.glossaires.nombre','Nombre d’entrées'],['ressources.glossaires.statut','Statut']]],
+ ['Infographies',[['ressources.infographies.mission','Mission'],['ressources.infographies.statut','Statut']]],
+ ['Documents fictifs',[['ressources.documents.document','Document'],['ressources.documents.pc','Problème complexe'],['ressources.documents.statut','Statut']]],
+ ['Grilles d’auto-évaluation',[['ressources.grilles.element','Élément'],['ressources.grilles.statut','Statut']]],
+ ['Webographies',[['ressources.webographies.mission','Mission'],['ressources.webographies.statut','Statut']]],
+ ['Autres ressources',[['ressources.autres.ressource','Ressource'],['ressources.autres.fonction','Fonction'],['ressources.autres.statut','Statut']]]]},
+ {title:'Problèmes complexes',groups:[
+ ['Problème complexe actuellement travaillé',[['pc.identifiant','Identifiant'],['pc.mission','Mission associée'],['pc.objectif','Objectif'],['pc.livrable','Livrable attendu'],['pc.statut','Statut']]],
+ ['Acquis mobilisables',[['pc.acquis.notions','Notions'],['pc.acquis.methodes','Méthodes'],['pc.acquis.outils','Outils']]],
+ ['Dossier documentaire',[['pc.dossier.document','Document'],['pc.dossier.type','Type'],['pc.dossier.fonction','Fonction'],['pc.dossier.statut','Statut']]]]},
+ {title:'Éléments validés',groups:[['',[
+ ['valides.element','Élément'],['valides.id','Identifiant'],['valides.version','Version'],['valides.date','Date de validation'],['valides.dependances','Dépendances principales'],['valides.reference','Référence du livrable']]]]},
+ {title:'Éléments proposés non validés',groups:[['',[
+ ['proposes.element','Élément'],['proposes.id','Identifiant'],['proposes.date','Date de proposition'],['proposes.decision','Décision attendue'],['proposes.reference','Référence du livrable']]]]},
+ {title:'Dépendances à surveiller',groups:[['',[
+ ['dependances.source','Élément source'],['dependances.elements','Éléments dépendants'],['dependances.motif','Motif'],['dependances.impact','Impact potentiel']]]]},
+ {title:'Questions ouvertes',groups:[['',[
+ ['questions.question','Question'],['questions.origine','Origine'],['questions.effet','Effet sur la conception'],['questions.priorite','Priorité']]]]},
+ {title:'Journal synthétique des décisions',groups:[['',[
+ ['journal.date','Date'],['journal.etape','Étape'],['journal.decision','Décision'],['journal.consequence','Conséquence pour la suite']]]]},
+ {title:'Règle de mise à jour',groups:[]}
+];
+const SCHEMA_FIELDS=new Map(SCHEMA.flatMap((sec,i)=>sec.groups.flatMap(([group,fields])=>fields.map(([id,label])=>[id,{label,group,section:i+1,title:sec.title}]))));
+// Correspondance déterministe étape → champs exacts du modèle, sans catégorisation libre.
+const STEP_FIELDS={
+ PR00:['donnees.source.donnee','donnees.source.valeur','donnees.source.source','donnees.deduit.donnee','donnees.deduit.valeur','donnees.deduit.justification','donnees.a_definir.donnee','donnees.a_definir.effet'],
+ PR01:['contraintes.autres','decisions.pedagogiques.justification'],
+ PR02:['architecture.socle.competence','architecture.socle.niveau','architecture.socle.limites'],
+ PR03:['architecture.objectifs.id','architecture.objectifs.objectif','architecture.objectifs.competence'],
+ PR04:['architecture.repartition.decouverte','architecture.repartition.mission1','architecture.repartition.pc1','architecture.repartition.mission2','architecture.repartition.pc2','architecture.repartition.supplementaires'],
+ PR05:['decisions.pedagogiques.justification','dependances.impact'],
+ PR06:['architecture.repartition.supplementaires','acquis.disponibles.autonomie'],
+ V01:['ressources.autres.ressource','ressources.autres.fonction'],
+ M01:['mission.objectif','mission.sousobjectifs','mission.sousobjectif'],
+ M02:['lore.organisation.contexte','lore.personnages.etablis','lore.lieux.etablis','lore.evenements.evenement'],
+ M03:['ressources.autres.ressource','ressources.autres.fonction'],
+ M04:['lore.evenements.evenement','lore.temps.actuelle'],
+ B01:['acquis.introduits.situations','lore.evenements.evenement'],
+ B02:['acquis.introduits.notions','acquis.introduits.methodes','acquis.introduits.outils'],
+ B03:['ressources.h5p.nombre','ressources.h5p.statut'],
+ B04:['lore.evenements.consequences'],
+ B05:['acquis.introduits.notions','acquis.introduits.methodes'],
+ B06:['ressources.h5p.nombre','ressources.h5p.statut','acquis.disponibles.notions'],
+ B07:['decisions.pedagogiques.justification'],
+ B08:['ressources.glossaires.nombre','ressources.glossaires.statut','acquis.introduits.vocabulaire'],
+ B09:['ressources.gift.nombre','ressources.gift.statut'],
+ R01:['acquis.introduits.situations'],R02:['acquis.introduits.methodes'],R03:['ressources.h5p.nombre'],
+ R04:['lore.evenements.consequences'],R05:['acquis.disponibles.notions'],R06:['ressources.h5p.nombre'],R07:['acquis.disponibles.autonomie'],
+ M06:['lore.evenements.evenement','lore.temps.actuelle'],
+ M07:['ressources.infographies.mission','ressources.infographies.statut'],
+ M08:['acquis.disponibles.notions','acquis.disponibles.methodes'],
+ M09:['ressources.webographies.mission','ressources.webographies.statut'],
+ M10:['acquis.disponibles.notions','acquis.disponibles.methodes','acquis.disponibles.outils','acquis.disponibles.autonomie'],
+ CC01:['pc.identifiant','pc.mission','pc.objectif','pc.acquis.notions','pc.acquis.methodes'],
+ CC02:['ressources.autres.ressource'],CC03:['lore.evenements.evenement','pc.objectif'],
+ CC04:['pc.livrable'],CC05:['ressources.grilles.element','ressources.grilles.statut'],
+ CC06:['pc.dossier.document','pc.dossier.type','pc.dossier.fonction'],
+ D01:['pc.dossier.document','pc.dossier.type','pc.dossier.fonction'],
+ D02:['pc.dossier.document','pc.dossier.fonction','ressources.documents.document'],
+ D03:['ressources.h5p.nombre','ressources.h5p.statut'],
+ CC08:['ressources.autres.ressource','ressources.autres.fonction'],
+ CC09:['ressources.h5p.nombre','ressources.h5p.statut'],
+ CC10:['ressources.grilles.element','ressources.grilles.statut'],
+ CC11:['pc.dossier.statut','dependances.impact'],
+ BT01:['ressources.autres.ressource','ressources.autres.fonction'],
+ REV01:['ressources.autres.ressource','ressources.autres.fonction'],
+ EV01:['ressources.autres.ressource','ressources.autres.fonction'],
+ EV02:['decisions.pedagogiques.decision'],
+ EV03:['ressources.gift.nombre','ressources.gift.statut'],
+ EV04:['ressources.autres.ressource'],FIN01:['dependances.impact','pc.dossier.statut']
+};
+// Compléments : chaque rubrique non calculée dispose d'un champ accessible à l'étape concernée.
+const STEP_COMPLEMENTS={
+ PR00:['donnees.a_definir.statut','architecture.competences'],
+ PR02:['architecture.competences'],PR03:['architecture.objectifs.statut'],
+ M02:['lore.personnages.nom','lore.personnages.fonction','lore.personnages.relation','lore.personnages.caracteristiques','lore.lieux.lieu','lore.lieux.fonction','lore.objets.element','lore.objets.fonction','lore.objets.apparition','lore.temps.depart','lore.temps.evenements','decisions.narratives.decision','decisions.narratives.consequence','decisions.narratives.etape'],
+ M03:['decisions.editoriales.decision','decisions.editoriales.application'],
+ M04:['lore.evenements.etape','decisions.narratives.decision','decisions.narratives.consequence'],
+ B02:['lore.objets.element','lore.objets.apparition'],
+ B03:['ressources.h5p.mission','ressources.h5p.boucle'],B06:['ressources.h5p.mission','ressources.h5p.boucle'],
+ B08:['ressources.glossaires.mission','ressources.glossaires.boucle'],
+ B09:['ressources.gift.mission','ressources.gift.boucle'],
+ R03:['ressources.h5p.mission','ressources.h5p.boucle'],
+ M06:['lore.evenements.etape','lore.temps.evenements'],
+ CC01:['pc.acquis.outils'],CC02:['decisions.editoriales.decision','decisions.editoriales.application'],
+ CC03:['decisions.narratives.decision','decisions.narratives.consequence'],
+ CC06:['pc.dossier.statut'],
+ D02:['ressources.documents.pc','ressources.documents.statut'],
+ CC11:['pc.statut'],
+ BT01:['ressources.autres.statut'],REV01:['ressources.autres.statut'],EV01:['ressources.autres.statut']
+};
+for(const [code,fields] of Object.entries(STEP_COMPLEMENTS))STEP_FIELDS[code]=[...new Set([...(STEP_FIELDS[code]||[]),...fields])];
+const COMMON_FIELDS=['valides.element','valides.reference','valides.version','valides.dependances','decisions.pedagogiques.decision','questions.question','questions.origine','questions.effet','proposes.decision'];
+const GLOBAL_GROUPS=[
+ ['Identification et version',['identification.formation','identification.version']],
+ ['Contraintes du module',['contraintes.public','contraintes.niveau','contraintes.prerequis','contraintes.duree','contraintes.modalites','contraintes.evaluation','contraintes.institution','contraintes.references','contraintes.autres']],
+ ['Acquis avant le module',['acquis.avant.notions','acquis.avant.methodes','acquis.avant.vocabulaire']],
+ ['Organisation et rôle de l’apprenant',['lore.organisation.nom','lore.organisation.secteur','lore.organisation.activite','lore.organisation.contexte','lore.apprenant.fonction','lore.apprenant.position','lore.apprenant.experience','lore.apprenant.responsabilites']],
+ ['Exceptions et dépendances',['exceptions.exception','exceptions.regle','exceptions.modification','exceptions.perimetre','exceptions.duree','exceptions.justification','dependances.source','dependances.elements','dependances.motif','dependances.impact']],
+ ['Reprise du travail',['phase.prochaine','questions.priorite']]
+];
+function stepFieldIds(step){return [...new Set([...(STEP_FIELDS[step.code]||[]),...COMMON_FIELDS])].filter(k=>SCHEMA_FIELDS.has(k))}
+function fieldLabel(key){const m=SCHEMA_FIELDS.get(key);return m?m.label:key}
+function fieldPath(key){const m=SCHEMA_FIELDS.get(key);return m?`${m.section}. ${m.title}${m.group?' › '+m.group:''} › ${m.label}`:key}
+function etatInput(key,value,id=null){const attr=id===null?`data-etat-global="${escapeHTML(key)}"`:`data-etat-id="${escapeHTML(id)}" data-etat-key="${escapeHTML(key)}"`;
+ return `<div class="etat-field ${key==='valides.element'||key==='questions.question'?'wide':''}"><label>${escapeHTML(fieldLabel(key))}<span class="etat-path">${escapeHTML(fieldPath(key))}</span><textarea ${attr} rows="${key.endsWith('.element')?3:2}" placeholder="À renseigner à partir des informations disponibles">${escapeHTML(value||'')}</textarea></label></div>`;
+}
+function renderGlobalFields(){
+ const box=document.getElementById('etatGlobalFields');if(!box)return;
+ box.innerHTML='<p class="etat-global-help">Les champs vides restent visibles dans le fichier exporté comme « Non renseigné ». Le nom du module et les dates de suivi sont repris automatiquement.</p>'+GLOBAL_GROUPS.map(([title,ids])=>`<section class="etat-global-group"><h3>${escapeHTML(title)}</h3><div class="etat-fields">${ids.map(k=>etatInput(k,state.etatGlobal?.[k])).join('')}</div></section>`).join('');
+}
+function legacyRecord(step){const v=state.etat?.[step.id];return v&&Object.values(v).some(x=>typeof x==='string'&&x.trim())?v:null}
+function etatEditor(step){
+ const rec=state.etatChamps?.[step.id]||{},old=legacyRecord(step),ids=stepFieldIds(step);
+ const oldText=old?Object.entries(old).filter(([,v])=>typeof v==='string'&&v.trim()).map(([k,v])=>`${({content:'Ancien résultat',context:'Ancien contexte',decisions:'Anciennes décisions',reference:'Ancienne référence',pending:'Anciens points à définir'})[k]||k} : ${v}`).join('\n\n'):'';
+ return `<section class="etat-box" aria-label="État du projet pour ${escapeHTML(step.id)}"><div class="etat-head"><div><h4>Champs de ETAT_PROJET</h4><p>Chaque champ correspond à une rubrique précise du modèle. Seules les étapes marquées « Validé » alimentent les rubriques de référence.</p></div><span class="etat-target">${ids.length} champs à renseigner</span></div><div class="etat-fields">${ids.slice(0,6).map(k=>etatInput(k,rec[k],step.id)).join('')}</div>${ids.length>6?`<details class="etat-old"><summary>Champs complémentaires (${ids.length-6})</summary><div class="etat-fields" style="padding-top:12px">${ids.slice(6).map(k=>etatInput(k,rec[k],step.id)).join('')}</div></details>`:''}${old?`<details class="etat-old"><summary>Anciennes notes conservées · à classer manuellement</summary><pre>${escapeHTML(oldText)}</pre></details>`:''}<div class="etat-footer"><span>Enregistrement local automatique · les propositions et les notes anciennes restent distinctes.</span><button class="btn small" type="button" data-action="copy-etat-prompt" data-id="${escapeHTML(step.id)}">Copier le prompt d'extraction</button></div></section>`;
+}
 function renderStep(s){const status=state.steps[s.id]||'à-faire';const isOpen=opened.has(s.id)||!!query;const launch=`Projet : ${state.name.trim()||'[nom du module]'}\nÉtape : ${s.id} — ${s.title}\n${s.launch}\nAppuie-toi sur les livrables et décisions déjà validés. Produis uniquement cette étape et attends ma validation.`;const resume=`Projet : ${state.name.trim()||'[nom du module]'}\nÉtape : ${s.id} — ${s.title}\n${s.resume}\nVérifie les prérequis et les éléments VALIDÉS avant de proposer la version révisée. Attends ma validation.`;
-return `<article class="step ${isOpen?'is-open':''}" data-status="${status}" data-step="${escapeHTML(s.id)}"><div class="step-top"><button class="step-toggle" type="button" data-action="toggle" data-id="${escapeHTML(s.id)}" aria-expanded="${isOpen}" aria-controls="body-${escapeHTML(s.id)}"><span class="step-id">${escapeHTML(s.id)}</span><span class="step-copy"><span class="step-name">${escapeHTML(s.title)} ${s.pending?'<span class="tag">À cadrer</span>':''}${s.optional?'<span class="tag">Facultatif</span>':''}</span><span class="step-mini">${escapeHTML(s.desc)}</span></span><span class="step-chevron" aria-hidden="true">›</span></button><label class="sr-only" for="status-${escapeHTML(s.id)}">Statut de ${escapeHTML(s.id)}</label><select class="status ${statusClass(status)}" id="status-${escapeHTML(s.id)}" data-status-id="${escapeHTML(s.id)}"><option value="à-faire" ${status==='à-faire'?'selected':''}>À faire</option><option value="en-cours" ${status==='en-cours'?'selected':''}>En cours</option><option value="proposé" ${status==='proposé'?'selected':''}>Proposé</option><option value="validé" ${status==='validé'?'selected':''}>Validé</option></select></div><div class="stage-body" id="body-${escapeHTML(s.id)}" ${isOpen?'':'hidden'}><div class="stage-grid"><div class="field"><h4>Comment procéder</h4><p>${escapeHTML(s.how)}</p></div><div class="field"><h4>Documents à consulter</h4><div class="frameworks">${s.refs.map(r=>`<span class="framework ${r.includes('à cadrer')?'pending':''}">${escapeHTML(r)}</span>`).join('')}</div></div></div>${s.tip?`<div class="hint">${escapeHTML(s.tip)}</div>`:''}<div class="prompt-area"><div class="prompt-heading"><h4>Prompts prêts à utiliser</h4></div><div class="prompt-card"><div class="prompt-label"><span>Démarrer l’étape</span><button class="btn small" type="button" data-action="copy" data-id="${escapeHTML(s.id)}" data-prompt="start">Copier</button></div><p class="prompt-text">${escapeHTML(launch)}</p></div><div class="prompt-card"><div class="prompt-label"><span>Reprendre ou corriger</span><button class="btn small" type="button" data-action="copy" data-id="${escapeHTML(s.id)}" data-prompt="resume">Copier</button></div><p class="prompt-text">${escapeHTML(resume)}</p></div></div><label class="note-label" for="note-${escapeHTML(s.id)}">Notes et décisions</label><textarea class="note-input" id="note-${escapeHTML(s.id)}" data-note-id="${escapeHTML(s.id)}" placeholder="Référence du livrable, point à arbitrer, décision prise…">${escapeHTML(state.notes[s.id]||'')}</textarea></div></article>`}
+return `<article class="step ${isOpen?'is-open':''}" data-status="${status}" data-step="${escapeHTML(s.id)}"><div class="step-top"><button class="step-toggle" type="button" data-action="toggle" data-id="${escapeHTML(s.id)}" aria-expanded="${isOpen}" aria-controls="body-${escapeHTML(s.id)}"><span class="step-id">${escapeHTML(s.id)}</span><span class="step-copy"><span class="step-name">${escapeHTML(s.title)} ${s.pending?'<span class="tag">À cadrer</span>':''}${s.optional?'<span class="tag">Facultatif</span>':''}</span><span class="step-mini">${escapeHTML(s.desc)}</span></span><span class="step-chevron" aria-hidden="true">›</span></button><label class="sr-only" for="status-${escapeHTML(s.id)}">Statut de ${escapeHTML(s.id)}</label><select class="status ${statusClass(status)}" id="status-${escapeHTML(s.id)}" data-status-id="${escapeHTML(s.id)}"><option value="à-faire" ${status==='à-faire'?'selected':''}>À faire</option><option value="en-cours" ${status==='en-cours'?'selected':''}>En cours</option><option value="proposé" ${status==='proposé'?'selected':''}>Proposé</option><option value="validé" ${status==='validé'?'selected':''}>Validé</option></select></div><div class="stage-body" id="body-${escapeHTML(s.id)}" ${isOpen?'':'hidden'}><div class="stage-grid"><div class="field"><h4>Comment procéder</h4><p>${escapeHTML(s.how)}</p></div><div class="field"><h4>Documents à consulter</h4><div class="frameworks">${s.refs.map(r=>`<span class="framework ${r.includes('à cadrer')?'pending':''}">${escapeHTML(r)}</span>`).join('')}</div></div></div>${s.tip?`<div class="hint">${escapeHTML(s.tip)}</div>`:''}<div class="prompt-area"><div class="prompt-heading"><h4>Prompts prêts à utiliser</h4></div><div class="prompt-card"><div class="prompt-label"><span>Démarrer l’étape</span><button class="btn small" type="button" data-action="copy" data-id="${escapeHTML(s.id)}" data-prompt="start">Copier</button></div><p class="prompt-text">${escapeHTML(launch)}</p></div><div class="prompt-card"><div class="prompt-label"><span>Reprendre ou corriger</span><button class="btn small" type="button" data-action="copy" data-id="${escapeHTML(s.id)}" data-prompt="resume">Copier</button></div><p class="prompt-text">${escapeHTML(resume)}</p></div></div>${etatEditor(s)}<label class="note-label" for="note-${escapeHTML(s.id)}">Notes libres de suivi</label><textarea class="note-input" id="note-${escapeHTML(s.id)}" data-note-id="${escapeHTML(s.id)}" placeholder="Référence du livrable, point à arbitrer, décision prise…">${escapeHTML(state.notes[s.id]||'')}</textarea></div></article>`}
 function renderGroup(g){const p=progress(g.children);const ch=g.children.map(renderItem).join('');let actions='';if(g.kind==='mission')actions=`<button class="btn small" type="button" data-action="add-mission-loop" data-target="${g.target}">+ Boucle</button>`;if(g.kind==='loops')actions=`<button class="btn small primary" type="button" data-action="add-loop" data-target="${g.target}">+ Boucle</button>`;if(g.kind==='docs')actions=`<button class="btn small primary" type="button" data-action="add-doc" data-target="${g.target}">+ Document</button>`;if(g.kind==='case')actions=`<button class="btn small" type="button" data-action="add-doc" data-target="${g.target}">+ Document</button>`;if(g.code?.startsWith('L') && !g.id.includes('DOC'))actions+=`<button class="btn small" type="button" data-action="add-rem" data-target="${escapeHTML(g.id)}" ${state.rem[g.id]?'disabled':''}>${state.rem[g.id]?'Remédiation ajoutée':'+ Remédiation'}</button>`;
 return `<section class="node-group" aria-label="${escapeHTML(g.title)}"><div class="group-head"><div class="group-title"><span class="group-index">${escapeHTML(g.code)}</span><div><h3>${escapeHTML(g.title)}</h3><p>${escapeHTML(g.desc)}</p></div></div><div class="group-actions"><span class="group-progress">${p.valid}/${p.total} validées</span>${actions}</div></div><div class="group-content"><div class="flow-stack">${ch}</div></div></section>`}
 function renderItem(item){return item.type==='group'?renderGroup(item):renderStep(item)}
-function render(){const tree=createTree();const whole=progress(Object.values(tree).flat());document.getElementById('sidePercent').textContent=whole.pct+' %';document.getElementById('sideStats').textContent=`${whole.valid} / ${whole.total} étapes validées`;document.getElementById('sideBar').style.width=whole.pct+'%';document.getElementById('sideNav').innerHTML=phaseMeta.map(p=>{const t=progress(tree[p.id]);return `<a href="#${p.id}"><span class="nav-num">${p.num}</span><span>${escapeHTML(p.short)}</span><span class="nav-right">${t.valid}/${t.total}</span></a>`}).join('');document.getElementById('overview').innerHTML=phaseMeta.map(p=>{const t=progress(tree[p.id]);return `<a class="phase-chip" href="#${p.id}"><span class="phase-i">PHASE ${p.num}</span><span class="phase-name">${escapeHTML(p.short)}</span><span class="phase-done">${t.valid} / ${t.total} validées</span><span class="track"><span style="width:${t.pct}%"></span></span></a>`}).join('');let visible=0;document.getElementById('phases').innerHTML=phaseMeta.map(p=>{const all=tree[p.id],t=progress(all),list=all.map(filtered).filter(Boolean);visible+=list.flatMap(leaves).length;if(!list.length)return '';return `<section class="phase" id="${p.id}"><header class="phase-head"><div class="phase-title"><span class="phase-bubble">${p.num}</span><div><h2>${escapeHTML(p.title)}</h2><p>${escapeHTML(p.desc)}</p></div></div><div class="phase-meter">${t.valid} / ${t.total} validées<div class="track"><span style="width:${t.pct}%"></span></div></div></header><div class="flow-stack">${list.map(renderItem).join('')}</div>${p.id==='missions'?`<button class="btn primary" type="button" data-action="add-mission">+ Ajouter une mission et son problème complexe</button>`:''}</section>`}).join('')||'<div class="empty">Aucune étape ne correspond à la recherche ou au filtre sélectionné.</div>';document.getElementById('visibleCount').textContent=visible+' étape'+(visible>1?'s':'')+' affichée'+(visible>1?'s':'');document.getElementById('projectName').value=state.name;}
+function render(){renderGlobalFields();const tree=createTree();const whole=progress(Object.values(tree).flat());document.getElementById('sidePercent').textContent=whole.pct+' %';document.getElementById('sideStats').textContent=`${whole.valid} / ${whole.total} étapes validées`;document.getElementById('sideBar').style.width=whole.pct+'%';document.getElementById('sideNav').innerHTML=phaseMeta.map(p=>{const t=progress(tree[p.id]);return `<a href="#${p.id}"><span class="nav-num">${p.num}</span><span>${escapeHTML(p.short)}</span><span class="nav-right">${t.valid}/${t.total}</span></a>`}).join('');document.getElementById('overview').innerHTML=phaseMeta.map(p=>{const t=progress(tree[p.id]);return `<a class="phase-chip" href="#${p.id}"><span class="phase-i">PHASE ${p.num}</span><span class="phase-name">${escapeHTML(p.short)}</span><span class="phase-done">${t.valid} / ${t.total} validées</span><span class="track"><span style="width:${t.pct}%"></span></span></a>`}).join('');let visible=0;document.getElementById('phases').innerHTML=phaseMeta.map(p=>{const all=tree[p.id],t=progress(all),list=all.map(filtered).filter(Boolean);visible+=list.flatMap(leaves).length;if(!list.length)return '';return `<section class="phase" id="${p.id}"><header class="phase-head"><div class="phase-title"><span class="phase-bubble">${p.num}</span><div><h2>${escapeHTML(p.title)}</h2><p>${escapeHTML(p.desc)}</p></div></div><div class="phase-meter">${t.valid} / ${t.total} validées<div class="track"><span style="width:${t.pct}%"></span></div></div></header><div class="flow-stack">${list.map(renderItem).join('')}</div>${p.id==='missions'?`<button class="btn primary" type="button" data-action="add-mission">+ Ajouter une mission et son problème complexe</button>`:''}</section>`}).join('')||'<div class="empty">Aucune étape ne correspond à la recherche ou au filtre sélectionné.</div>';document.getElementById('visibleCount').textContent=visible+' étape'+(visible>1?'s':'')+' affichée'+(visible>1?'s':'');document.getElementById('projectName').value=state.name;}
 function notify(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2800)}
 function noteSave(e){const id=e.target.dataset.noteId;if(id){state.notes[id]=e.target.value;save()}}
 async function copyText(value){try{await navigator.clipboard.writeText(value);notify('Prompt copié.')}catch(e){const ta=document.createElement('textarea');ta.value=value;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();try{document.execCommand('copy');notify('Prompt copié.')}catch(err){notify('Copie indisponible dans ce navigateur.')}ta.remove()}}
 function getPrompt(id,variant){const step=Object.values(createTree()).flat().flatMap(leaves).find(s=>s.id===id);if(!step)return '';const text=variant==='start'?step.launch:step.resume;const final=variant==='start'?'Produis uniquement cette étape et attends ma validation.':'Préserve les éléments validés ; attends ma validation.';return `Projet : ${state.name.trim()||'[nom du module]'}\nÉtape : ${id} — ${step.title}\n${text}\n${final}`}
+function etatPrompt(id){
+ const step=Object.values(createTree()).flat().flatMap(leaves).find(s=>s.id===id);if(!step)return '';
+ const fields=stepFieldIds(step).map(key=>`- ${fieldPath(key)}`).join('\n');
+ return `Module « ${state.name.trim()||'[nom du module]'} », étape ${id} (« ${step.title} »).\nÀ partir des seules décisions et informations réellement disponibles dans notre échange, propose le contenu des champs suivants du modèle ETAT_PROJET.md.\n\n${fields}\n\nDistingue explicitement SOURCE, DÉDUIT et À_DÉFINIR. Ne transforme pas une proposition en décision validée. Si une rubrique n'est pas documentée, écris « Non renseigné ». Réponds champ par champ, prêt à coller, sans inventer de donnée.`;
+}
+function saveEtatInput(e){
+ const id=e.target.dataset.etatId,key=e.target.dataset.etatKey;
+ if(id&&SCHEMA_FIELDS.has(key)){state.etatChamps[id]??={};state.etatChamps[id][key]=e.target.value;save();return}
+ const global=e.target.dataset.etatGlobal;
+ if(global&&SCHEMA_FIELDS.has(global)){state.etatGlobal[global]=e.target.value;save()}
+}
+function downloadText(content,filename,mime='text/markdown;charset=utf-8'){
+ const blob=new Blob(['\uFEFF',content],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function cleanFileName(name){return (name||'module').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,65)||'module'}
+function markdownClean(v){return String(v||'').trim().replace(/\r\n/g,'\n')}
+function fieldValue(data,key,steps,current,last){
+ if(key==='identification.nom')return data.name.trim();
+ if(key==='identification.date')return new Date(data.updatedAt||Date.now()).toLocaleString('fr-FR',{dateStyle:'long',timeStyle:'short'});
+ if(key==='identification.version')return data.etatGlobal?.[key]||'1 (suivi local)';
+ if(key==='phase.phase')return current?.phase?phaseMeta.find(p=>p.id===current.phase)?.title||current.phase:'Aucune phase en cours';
+ if(key==='phase.etape')return current?`${current.id} | ${current.title}`:'Toutes les étapes visibles sont déclarées validées';
+ if(key==='phase.statut')return current?(data.steps[current.id]||'à-faire').toUpperCase():'À confirmer';
+ if(key==='phase.derniere')return last?`${last.id} | ${last.title}`:'Aucune';
+ if(key==='phase.prochaine')return data.etatGlobal?.[key]||'À définir par l’utilisateur après vérification des prérequis';
+ if(key==='mission.numero'){const m=current?.id.match(/MIS\d+/);return m?m[0]:data.etatGlobal?.[key]||''}
+ if(key==='mission.boucle'){const b=current?.id.match(/M05L\d+/);return b?b[0]:data.etatGlobal?.[key]||''}
+ if(key==='mission.statut')return current&&/MIS\d+/.test(current.id)?(data.steps[current.id]||'à-faire'):'';
+ if(key==='pc.identifiant'){const p=current?.id.match(/PC\d+/);return p?p[0]:''}
+ if(key==='pc.statut')return current&&/PC\d+/.test(current.id)?(data.steps[current.id]||'à-faire'):'';
+ const valid=steps.filter(x=>data.steps[x.id]==='validé'),proposed=steps.filter(x=>data.steps[x.id]==='proposé');
+ const summary=(arr,fn)=>arr.map(x=>fn(x)).join('\n');
+ if(key==='valides.id')return summary(valid,x=>x.id);
+ if(key==='valides.date')return summary(valid,x=>`${x.id} : ${data.etatDates?.[x.id]?dateLabel(data.etatDates[x.id]):'Date non enregistrée'}`);
+ if(key==='valides.element')return summary(valid.filter(x=>!markdownClean(data.etatChamps?.[x.id]?.['valides.element'])),x=>`${x.id} : ${x.title}`);
+ if(key==='proposes.element')return summary(proposed,x=>`${x.id} : ${markdownClean(data.etatChamps?.[x.id]?.['valides.element'])||x.title}`);
+ if(key==='proposes.id')return summary(proposed,x=>x.id);
+ if(key==='proposes.date')return summary(proposed,x=>`${x.id} : date de proposition non enregistrée`);
+ if(key==='proposes.reference')return summary(proposed,x=>`${x.id} : ${markdownClean(data.etatChamps?.[x.id]?.['valides.reference'])||'Référence non renseignée'}`);
+ if(key==='proposes.decision')return summary(proposed.filter(x=>markdownClean(data.etatChamps?.[x.id]?.[key])),x=>`${x.id} : ${markdownClean(data.etatChamps[x.id][key])}`);
+ if(key==='decisions.pedagogiques.etape')return summary(valid.filter(x=>markdownClean(data.etatChamps?.[x.id]?.['decisions.pedagogiques.decision'])),x=>x.id);
+ if(key==='journal.date')return summary(valid.filter(x=>data.etatDates?.[x.id]),x=>dateLabel(data.etatDates[x.id]));
+ if(key==='journal.etape')return summary(valid.filter(x=>data.etatDates?.[x.id]),x=>x.id);
+ if(key==='journal.decision')return summary(valid.filter(x=>markdownClean(data.etatChamps?.[x.id]?.['decisions.pedagogiques.decision'])),x=>`${x.id} : ${markdownClean(data.etatChamps[x.id]['decisions.pedagogiques.decision'])}`);
+ if(key==='journal.consequence')return summary(valid.filter(x=>markdownClean(data.etatChamps?.[x.id]?.['decisions.narratives.consequence'])),x=>`${x.id} : ${markdownClean(data.etatChamps[x.id]['decisions.narratives.consequence'])}`);
+ return data.etatGlobal?.[key]||'';
+}
+function allStepRecords(data,steps,key,includeValidated=true){
+ return steps.filter(step=>includeValidated?data.steps[step.id]==='validé':data.steps[step.id]!=='validé')
+  .map(step=>({step,text:markdownClean(data.etatChamps?.[step.id]?.[key])}))
+  .filter(row=>row.text);
+}
+function outputField(lines,data,steps,current,last,key){
+ const global=markdownClean(fieldValue(data,key,steps,current,last));const records=key.startsWith('proposes.')?[]:allStepRecords(data,steps,key);
+ lines.push(`${fieldLabel(key)} :${global?' '+global.split('\n')[0]:records.length?'':' Non renseigné'}`);
+ if(global.includes('\n'))lines.push(...global.split('\n').slice(1));
+ for(const {step,text} of records){lines.push(`  - [${step.id}] ${text.split('\n')[0]}`,...text.split('\n').slice(1).map(t=>'    '+t))}
+ lines.push('');
+}
+function etatMarkdown(data){
+ const prior=state;state=data;
+ try{
+  const tree=createTree(),steps=Object.values(tree).flat().flatMap(leaves),p=progress(Object.values(tree).flat());
+  const current=steps.find(s=>(data.steps[s.id]||'à-faire')==='en-cours')||steps.find(s=>(data.steps[s.id]||'à-faire')!=='validé');
+  const last=[...steps].reverse().find(s=>(data.steps[s.id]||'à-faire')==='validé');
+  const lines=['# ETAT_PROJET','','> Référentiel à 18 sections. Les statuts sont déclarés manuellement et ne prouvent pas une validation dans ChatGPT. Les propositions et données anciennes sont séparées.','',`Progression déclarée : ${p.valid} / ${p.total} étapes validées (${p.pct} %)`,''];
+  SCHEMA.forEach((section,i)=>{
+   lines.push(`## ${i+1}. ${section.title}`,'');
+   if(i===17){lines.push('ETAT_PROJET doit rester synthétique. Il conserve les décisions et informations nécessaires à la continuité du travail.','Il ne doit pas reproduire intégralement les contenus déjà produits.','Pour un livrable détaillé, conserver son existence, son statut, son identifiant et les informations nécessaires aux étapes suivantes.','Les anciennes versions obsolètes ne doivent pas rester présentées comme actives. Toute modification d’un élément VALIDÉ doit conduire à vérifier ses dépendances.','');return}
+   for(const [group,fields] of section.groups){if(group)lines.push(`### ${group}`,'');for(const [key] of fields)outputField(lines,data,steps,current,last,key)}
+   if(i===12){const validated=steps.filter(x=>data.steps[x.id]==='validé');lines.push('Registre des étapes déclarées validées :','');
+    if(!validated.length)lines.push('Aucune étape validée.','');
+    for(const st of validated){const record=data.etatChamps?.[st.id]||{};const when=data.etatDates?.[st.id]||'Date non enregistrée';
+     lines.push(`- ${st.id} | ${st.title} | ${dateLabel(when)} | ${markdownClean(record['valides.reference'])||'Référence non renseignée'}`)}lines.push('')}
+   if(i===13){const drafts=steps.filter(x=>data.steps[x.id]==='proposé');lines.push('Registre des étapes proposées :','');
+    if(!drafts.length)lines.push('Aucune étape proposée.','');
+    for(const st of drafts)lines.push(`- ${st.id} | ${st.title} | ${markdownClean(data.etatChamps?.[st.id]?.['valides.reference'])||'Référence non renseignée'}`);lines.push('')}
+   if(i===16){lines.push('Journal automatique des validations déclarées :','');const hist=steps.filter(x=>data.steps[x.id]==='validé'&&data.etatDates?.[x.id]);
+    if(!hist.length)lines.push('Aucune validation datée.','');
+    for(const st of hist)lines.push(`- ${dateLabel(data.etatDates[st.id])} | ${st.id} | ${st.title}`);lines.push('')}
+  });
+  // Les anciennes données et les propositions ne sont jamais promues en informations validées.
+  lines.push('## Annexe A. Propositions et saisies non validées','','Ces contenus ne figurent pas dans les rubriques actées ci-dessus.','');let drafts=0;
+  for(const step of steps){if(data.steps[step.id]==='validé')continue;const record=data.etatChamps?.[step.id]||{};
+   const entries=Object.entries(record).filter(([key,v])=>SCHEMA_FIELDS.has(key)&&markdownClean(v));if(!entries.length)continue;drafts++;
+   lines.push(`### ${step.id} | ${step.title} [${data.steps[step.id]||'à-faire'}]`,'');
+   for(const [key,val] of entries)lines.push(`**${fieldPath(key)}**`,'',markdownClean(val),'');
+  }if(!drafts)lines.push('Aucune proposition structurée renseignée.','');
+  lines.push('## Annexe B. Notes de l’ancienne version à classer','','Contenu conservé sans conversion automatique ni validation implicite.','');let old=0;
+  for(const [id,record] of Object.entries(data.etat||{})){const entries=Object.entries(record).filter(([,v])=>markdownClean(v));if(!entries.length)continue;old++;
+   lines.push(`### ${id}`,'');for(const [key,value] of entries)lines.push(`**${({content:'Ancien résultat',context:'Ancien contexte',decisions:'Anciennes décisions',reference:'Ancienne référence',pending:'Anciens points à définir'})[key]||key}**`,'',markdownClean(value),'');
+  }if(!old)lines.push('Aucune donnée de l’ancien éditeur.','');
+  lines.push('## Annexe C. Configuration et notes libres du suivi','','La configuration décrit le tableau de suivi et ne constitue pas une décision pédagogique validée.','',`Nombre de missions affichées : ${data.missionCount}`,`Nombre de boucles de découverte affichées : ${data.loops.dec||1}`);
+  for(let i=1;i<=data.missionCount;i++)lines.push(`Mission ${i} : ${data.loops['mis'+i]||1} boucle(s) ; problème complexe ${i} : ${data.docs['pc'+i]||1} document(s).`);
+  const rems=Object.keys(data.rem||{}).filter(k=>data.rem[k]);lines.push(`Remédiations affichées : ${rems.length?rems.join(', '):'aucune'}`,'');
+  let notes=0;for(const [id,value] of Object.entries(data.notes||{})){if(!markdownClean(value))continue;notes++;lines.push(`### ${id}`,'',markdownClean(value),'')};if(!notes)lines.push('Aucune note libre.','');
+  lines.push('---','Téléchargement local : importez manuellement ce fichier ETAT_PROJET.md dans votre Project ChatGPT. L’export JSON conserve en supplément le suivi et les champs éditables.');
+  return lines.join('\n').replace(/\n{4,}/g,'\n\n\n')+'\n';
+ }finally{state=prior}
+}
+function downloadEtatFor(id){if(!own(db.modules,id))return;if(id===activeId)save();const data=id===activeId?state:db.modules[id];downloadText(etatMarkdown(data),'ETAT_PROJET.md');notify('État du projet téléchargé. Ajoutez le fichier dans votre Project ChatGPT.')}
 function addLoop(target){state.loops[target]=(state.loops[target]||1)+1;save();render();notify('Boucle ajoutée.')}function addDoc(target){state.docs[target]=(state.docs[target]||1)+1;save();render();notify('Document ajouté.')}function addMission(){const m=++state.missionCount;state.loops['mis'+m]=1;state.docs['pc'+m]=1;save();render();notify('Mission '+m+' et problème complexe '+m+' ajoutés.')}
-document.getElementById('phases').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action,id=b.dataset.id,target=b.dataset.target;if(a==='toggle'){if(opened.has(id))opened.delete(id);else opened.add(id);const card=b.closest('.step'),body=card.querySelector('.stage-body'),yes=opened.has(id);card.classList.toggle('is-open',yes);body.hidden=!yes;b.setAttribute('aria-expanded',String(yes));return}if(a==='copy'){copyText(getPrompt(id,b.dataset.prompt));return}if(a==='add-loop'||a==='add-mission-loop'){addLoop(target);return}if(a==='add-doc'){addDoc(target);return}if(a==='add-mission'){addMission();return}if(a==='add-rem'){state.rem[target]=true;save();render();notify('Branche de remédiation ajoutée.')}});
-document.getElementById('phases').addEventListener('change',e=>{const id=e.target.dataset.statusId;if(!id)return;state.steps[id]=e.target.value;save();render()});document.getElementById('phases').addEventListener('input',noteSave);
+document.getElementById('phases').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action,id=b.dataset.id,target=b.dataset.target;if(a==='toggle'){if(opened.has(id))opened.delete(id);else opened.add(id);const card=b.closest('.step'),body=card.querySelector('.stage-body'),yes=opened.has(id);card.classList.toggle('is-open',yes);body.hidden=!yes;b.setAttribute('aria-expanded',String(yes));return}if(a==='copy'){copyText(getPrompt(id,b.dataset.prompt));return}if(a==='copy-etat-prompt'){copyText(etatPrompt(id));return}if(a==='add-loop'||a==='add-mission-loop'){addLoop(target);return}if(a==='add-doc'){addDoc(target);return}if(a==='add-mission'){addMission();return}if(a==='add-rem'){state.rem[target]=true;save();render();notify('Branche de remédiation ajoutée.')}});
+document.getElementById('phases').addEventListener('change',e=>{const id=e.target.dataset.statusId;if(!id)return;state.steps[id]=e.target.value;if(e.target.value==='validé'&&!state.etatDates[id])state.etatDates[id]=new Date().toISOString();if(e.target.value!=='validé')delete state.etatDates[id];save();render()});document.getElementById('phases').addEventListener('input',e=>{noteSave(e);saveEtatInput(e)});document.getElementById('etatGlobalFields').addEventListener('input',saveEtatInput);
 document.getElementById('projectName').addEventListener('input',e=>{state.name=e.target.value;save()});document.getElementById('projectName').addEventListener('change',()=>render());document.getElementById('search').addEventListener('input',e=>{query=e.target.value.trim().toLocaleLowerCase('fr');render()});document.getElementById('filter').addEventListener('change',e=>{filter=e.target.value;render()});document.getElementById('expandAll').addEventListener('click',()=>{Object.values(createTree()).flat().flatMap(leaves).forEach(s=>opened.add(s.id));render()});document.getElementById('collapseAll').addEventListener('click',()=>{opened.clear();query='';document.getElementById('search').value='';render()});
 function downloadJSON(data,filename){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function moduleProgress(data){const prior=state;state=data;try{return progress(Object.values(createTree()).flat())}finally{state=prior}}
 function renderManager(){
  const cards=document.getElementById('moduleCards');document.getElementById('moduleCount').textContent='('+db.order.length+')';
  if(!db.order.length){cards.innerHTML='<div class="manager-empty"><h3>Aucun module pour le moment</h3><p>Créez votre premier module pour suivre toutes les étapes, de la préparation à la finalisation.</p><button type="button" class="btn primary" id="emptyCreate">Créer mon premier module</button></div>';return}
- cards.innerHTML=db.order.filter(id=>own(db.modules,id)).map(id=>{const m=db.modules[id],pr=moduleProgress(m),name=m.name.trim()||'Sans titre';return `<article class="module-card"><div class="module-top"><div><h3>${escapeHTML(name)}</h3><p class="module-stamp">Modifié le ${escapeHTML(dateLabel(m.updatedAt))}</p></div><span class="module-badge">${pr.pct} %</span></div><div class="module-progress"><span>${pr.valid} / ${pr.total} étapes validées</span><span>${pr.pct} %</span></div><div class="track"><span style="width:${pr.pct}%"></span></div><div class="module-buttons"><button class="btn primary" type="button" data-manage="open" data-id="${escapeHTML(id)}">Ouvrir le module</button><button class="btn small" type="button" data-manage="rename" data-id="${escapeHTML(id)}">Renommer</button><button class="btn small delete" type="button" data-manage="delete" data-id="${escapeHTML(id)}">Supprimer</button></div></article>`}).join('');
+ cards.innerHTML=db.order.filter(id=>own(db.modules,id)).map(id=>{const m=db.modules[id],pr=moduleProgress(m),name=m.name.trim()||'Sans titre';return `<article class="module-card"><div class="module-top"><div><h3>${escapeHTML(name)}</h3><p class="module-stamp">Modifié le ${escapeHTML(dateLabel(m.updatedAt))}</p></div><span class="module-badge">${pr.pct} %</span></div><div class="module-progress"><span>${pr.valid} / ${pr.total} étapes validées</span><span>${pr.pct} %</span></div><div class="track"><span style="width:${pr.pct}%"></span></div><div class="module-buttons"><button class="btn primary" type="button" data-manage="open" data-id="${escapeHTML(id)}">Ouvrir le module</button><button class="btn small" type="button" data-manage="etat" data-id="${escapeHTML(id)}">État projet .md</button><button class="btn small" type="button" data-manage="rename" data-id="${escapeHTML(id)}">Renommer</button><button class="btn small delete" type="button" data-manage="delete" data-id="${escapeHTML(id)}">Supprimer</button></div></article>`}).join('');
 }
 function showManager(){if(activeId)save();activeId=null;db.activeId=null;persist();opened.clear();query='';filter='all';document.getElementById('search').value='';document.getElementById('filter').value='all';document.getElementById('moduleWorkspace').hidden=true;document.getElementById('moduleManager').hidden=false;document.title='Gestion des modules | Parcours de conception';renderManager();window.scrollTo(0,0)}
 function openModule(id){if(!own(db.modules,id))return;activeId=id;state=normalizeModule(db.modules[id]);db.activeId=id;persist();opened.clear();query='';filter='all';document.getElementById('search').value='';document.getElementById('filter').value='all';document.getElementById('moduleManager').hidden=true;document.getElementById('moduleWorkspace').hidden=false;document.title=(state.name||'Module sans titre')+' | Suivi pédagogique';render();window.scrollTo(0,0)}
@@ -265,8 +586,10 @@ function parseImport(data){
  throw Error('Format inconnu');
 }
 document.getElementById('createModuleForm').addEventListener('submit',e=>{e.preventDefault();createModule(document.getElementById('newModuleName').value)});
-document.getElementById('moduleCards').addEventListener('click',e=>{const b=e.target.closest('button[data-manage]');if(!b){if(e.target.id==='emptyCreate')document.getElementById('newModuleName').focus();return}const id=b.dataset.id;if(b.dataset.manage==='open')openModule(id);if(b.dataset.manage==='rename')renameModule(id);if(b.dataset.manage==='delete')deleteModule(id)});
+document.getElementById('moduleCards').addEventListener('click',e=>{const b=e.target.closest('button[data-manage]');if(!b){if(e.target.id==='emptyCreate')document.getElementById('newModuleName').focus();return}const id=b.dataset.id;if(b.dataset.manage==='open')openModule(id);if(b.dataset.manage==='etat')downloadEtatFor(id);if(b.dataset.manage==='rename')renameModule(id);if(b.dataset.manage==='delete')deleteModule(id)});
 document.getElementById('backToModules').addEventListener('click',showManager);
+document.getElementById('downloadEtatTop').addEventListener('click',()=>{if(activeId)downloadEtatFor(activeId)});
+document.getElementById('downloadEtatFixed').addEventListener('click',()=>{if(activeId)downloadEtatFor(activeId)});
 document.getElementById('exportBtn').addEventListener('click',()=>{if(!activeId)return;downloadJSON({...state,exportedAt:new Date().toISOString()},'suivi-module-'+new Date().toISOString().slice(0,10)+'.json');notify('Suivi du module exporté.')});
 document.getElementById('exportAllBtn').addEventListener('click',()=>{downloadJSON({...db,activeId:null,exportedAt:new Date().toISOString()},'tous-les-modules-'+new Date().toISOString().slice(0,10)+'.json');notify('Tous les modules exportés.')});
 document.getElementById('importBtn').addEventListener('click',()=>{importMode='replace';document.getElementById('importFile').click()});
